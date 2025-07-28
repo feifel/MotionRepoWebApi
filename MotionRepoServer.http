@@ -1,0 +1,78 @@
+### Test Workout CRUD Operations
+
+### Get all workouts
+GET {{MotionRepoServer_HostAddress}}/workouts
+
+### Get workout by ID (replace with actual ID)
+GET {{MotionRepoServer_HostAddress}}/workouts/00000000-0000-0000-0000-000000000000
+
+### Create a new workout
+POST {{MotionRepoServer_HostAddress}}/workouts
+Content-Type: application/json
+
+{
+  "name": "Full Body Workout",
+  "description": "A comprehensive full body workout routine",
+  "exercises": [
+    {
+      "motionId": "00000000-0000-0000-0000-000000000000",
+      "speed": {
+        "speedMultiplier": 1.0,
+        "allowSpeedAdjustment": true
+      },
+      "target": {
+        "type": "Duration",
+        "value": 60
+      },
+      "customFields": {
+        "intensity": "medium",
+        "notes": "Focus on form"
+      }
+    },
+    {
+      "motionId": "00000000-0000-0000-0000-000000000000",
+      "speed": {
+        "speedMultiplier": 0.8,
+        "allowSpeedAdjustment": true
+      },
+      "target": {
+        "type": "Repetitions",
+        "value": 15
+      },
+      "customFields": {
+        "weight": 10.5,
+        "restTime": 45
+      }
+    }
+  ]
+}
+
+### Update a workout (replace with actual ID)
+PUT {{MotionRepoServer_HostAddress}}/workouts/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+{
+  "name": "Updated Workout Name",
+  "description": "Updated description",
+  "exercises": [
+    {
+      "exerciseId": "00000000-0000-0000-0000-000000000000",
+      "motionId": "00000000-0000-0000-0000-000000000000",
+      "speed": {
+        "speedMultiplier": 1.2,
+        "allowSpeedAdjustment": true
+      },
+      "target": {
+        "type": "Duration",
+        "value": 90
+      },
+      "customFields": {
+        "intensity": "high",
+        "notes": "Push yourself!"
+      }
+    }
+  ]
+}
+
+### Delete a workout (replace with actual ID)
+DELETE {{MotionRepoServer_HostAddress}}/workouts/00000000-0000-0000-0000-000000000000
