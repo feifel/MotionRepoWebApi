@@ -43,16 +43,17 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
 });
 builder.Services.AddAuthorization();
 
-// Add CORS support for browser testing
-// builder.Services.AddCors(options =>
-// {
-//     options.AddDefaultPolicy(policy =>
-//     {
-//         policy.AllowAnyOrigin();
-//         policy.AllowAnyMethod();
-//         policy.AllowAnyHeader();
-//     });
-// });
+// Add CORS support 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("https://feifel.github.io/MotionRepoWebApp/", "http://localhost:5173", "https://localhost:5173");
+        //policy.AllowAnyOrigin(); // for browser testing
+        policy.AllowAnyMethod();
+        policy.AllowAnyHeader();
+    });
+});
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -77,6 +78,7 @@ app.UseHttpsRedirection();
 
 // Enable CORS
 //app.UseCors();
+app.UseCors("AllowFrontend");
 
 // Add authentication and authorization middleware
 app.UseAuthentication();
