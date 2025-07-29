@@ -84,6 +84,224 @@ public class MotionService
                 Categories = new[] { "Entertainment", "Cardio" },
                 PrimaryJoints = new[] { "Hip", "Shoulder", "Spine" },
                 Labels = new[] { "Dance", "Music", "Fun" }
+            },
+            new Motion
+            {
+                Name = "Jumping Jack Animation",
+                Description = "Classic jumping jack cardio exercise",
+                File = "jumping_jack.fbx",
+                FileType = "FBX",
+                Screenshot = "jumping_jack_screenshot.jpg",
+                Level = 1,
+                Equipment = new[] { "NoEquipment" },
+                BodyParts = new[] { "FullBody" },
+                MuscleGroups = new[] { "Legs", "Arms", "Core" },
+                Categories = new[] { "Cardio", "FullBody" },
+                PrimaryJoints = new[] { "Shoulder", "Hip", "Knee", "Ankle" },
+                Labels = new[] { "JumpingJack", "Cardio", "FullBody" }
+            },
+            new Motion
+            {
+                Name = "Leg Raise Animation",
+                Description = "Supine leg raises for lower abs",
+                File = "leg_raise.fbx",
+                FileType = "FBX",
+                Screenshot = "leg_raise_screenshot.jpg",
+                Level = 2,
+                Equipment = new[] { "NoEquipment" },
+                BodyParts = new[] { "Core", "Legs" },
+                MuscleGroups = new[] { "LowerAbs", "HipFlexors" },
+                Categories = new[] { "Strength", "Core" },
+                PrimaryJoints = new[] { "Hip", "Knee" },
+                Labels = new[] { "LegRaise", "Core", "LowerAbs" }
+            },
+            new Motion
+            {
+                Name = "Hip Thrust Animation",
+                Description = "Glute bridge hip thrust exercise",
+                File = "hip_thrust.fbx",
+                FileType = "FBX",
+                Screenshot = "hip_thrust_screenshot.jpg",
+                Level = 3,
+                Equipment = new[] { "Barbell" },
+                BodyParts = new[] { "Glutes", "Legs", "Core" },
+                MuscleGroups = new[] { "Glutes", "Hamstrings", "Core" },
+                Categories = new[] { "Strength", "Glutes", "LowerBody" },
+                PrimaryJoints = new[] { "Hip", "Knee", "Spine" },
+                Labels = new[] { "HipThrust", "Glutes", "Strength" }
+            },
+            new Motion
+            {
+                Name = "Wall Sit Animation",
+                Description = "Isometric wall sit for leg endurance",
+                File = "wall_sit.fbx",
+                FileType = "FBX",
+                Screenshot = "wall_sit_screenshot.jpg",
+                Level = 2,
+                Equipment = new[] { "NoEquipment" },
+                BodyParts = new[] { "Legs", "Core" },
+                MuscleGroups = new[] { "Quads", "Glutes", "Core" },
+                Categories = new[] { "Isometric", "Strength", "LowerBody" },
+                PrimaryJoints = new[] { "Knee", "Hip" },
+                Labels = new[] { "WallSit", "Legs", "Isometric" }
+            },
+            new Motion
+            {
+                Name = "Jump Rope Animation",
+                Description = "Classic jump rope cardio workout",
+                File = "jump_rope.fbx",
+                FileType = "FBX",
+                Screenshot = "jump_rope_screenshot.jpg",
+                Level = 3,
+                Equipment = new[] { "JumpRope" },
+                BodyParts = new[] { "FullBody" },
+                MuscleGroups = new[] { "Legs", "Arms", "Core" },
+                Categories = new[] { "Cardio", "FullBody" },
+                PrimaryJoints = new[] { "Wrist", "Shoulder", "Hip", "Knee" },
+                Labels = new[] { "JumpRope", "Cardio", "FullBody" }
+            },
+            new Motion
+            {
+                Name = "Chest Fly Animation",
+                Description = "Dumbbell chest fly exercise",
+                File = "chest_fly.fbx",
+                FileType = "FBX",
+                Screenshot = "chest_fly_screenshot.jpg",
+                Level = 3,
+                Equipment = new[] { "Dumbbells" },
+                BodyParts = new[] { "Chest", "Arms", "Shoulders" },
+                MuscleGroups = new[] { "Chest", "Shoulders", "Arms" },
+                Categories = new[] { "Strength", "UpperBody", "Isolation" },
+                PrimaryJoints = new[] { "Shoulder", "Elbow" },
+                Labels = new[] { "ChestFly", "Chest", "Isolation" }
+            },
+            new Motion
+            {
+                Name = "Side Plank Animation",
+                Description = "Side plank hold for oblique strength",
+                File = "side_plank.fbx",
+                FileType = "FBX",
+                Screenshot = "side_plank_screenshot.jpg",
+                Level = 2,
+                Equipment = new[] { "NoEquipment" },
+                BodyParts = new[] { "Core", "Obliques" },
+                MuscleGroups = new[] { "Obliques", "Core" },
+                Categories = new[] { "Strength", "Core", "Isometric" },
+                PrimaryJoints = new[] { "Spine" },
+                Labels = new[] { "SidePlank", "Core", "Obliques" }
+            },
+            new Motion
+            {
+                Name = "Cable Row Animation",
+                Description = "Cable row exercise for back strength",
+                File = "cable_row.fbx",
+                FileType = "FBX",
+                Screenshot = "cable_row_screenshot.jpg",
+                Level = 3,
+                Equipment = new[] { "CableMachine" },
+                BodyParts = new[] { "Back", "Arms" },
+                MuscleGroups = new[] { "Lats", "Biceps", "Rhomboids" },
+                Categories = new[] { "Strength", "UpperBody", "Compound" },
+                PrimaryJoints = new[] { "Shoulder", "Elbow" },
+                Labels = new[] { "CableRow", "Back", "Strength" }
+            },
+            new Motion
+            {
+                Name = "Leg Extension Animation",
+                Description = "Leg extension machine exercise for quads",
+                File = "leg_extension.fbx",
+                FileType = "FBX",
+                Screenshot = "leg_extension_screenshot.jpg",
+                Level = 2,
+                Equipment = new[] { "LegExtensionMachine" },
+                BodyParts = new[] { "Legs" },
+                MuscleGroups = new[] { "Quads" },
+                Categories = new[] { "Strength", "Legs", "Isolation" },
+                PrimaryJoints = new[] { "Knee" },
+                Labels = new[] { "LegExtension", "Quads", "Isolation" }
+            },
+            new Motion
+            {
+                Name = "Flutter Kick Animation",
+                Description = "Lying flutter kicks for core endurance",
+                File = "flutter_kick.fbx",
+                FileType = "FBX",
+                Screenshot = "flutter_kick_screenshot.jpg",
+                Level = 1,
+                Equipment = new[] { "NoEquipment" },
+                BodyParts = new[] { "Core", "Legs" },
+                MuscleGroups = new[] { "Core", "HipFlexors" },
+                Categories = new[] { "Strength", "Core", "Endurance" },
+                PrimaryJoints = new[] { "Hip", "Knee" },
+                Labels = new[] { "FlutterKick", "Core", "Endurance" }
+            },
+            new Motion
+            {
+                Name = "Side Lunge Animation",
+                Description = "Lateral side lunge movement",
+                File = "side_lunge.fbx",
+                FileType = "FBX",
+                Screenshot = "side_lunge_screenshot.jpg",
+                Level = 3,
+                Equipment = new[] { "NoEquipment" },
+                BodyParts = new[] { "Legs", "Glutes", "Core" },
+                MuscleGroups = new[] { "Quads", "Glutes", "Hamstrings" },
+                Categories = new[] { "Strength", "LowerBody", "Balance" },
+                PrimaryJoints = new[] { "Knee", "Hip", "Ankle" },
+                Labels = new[] { "SideLunge", "Legs", "Balance" }
+            },
+            new Motion
+            {
+                Name = "Farmer's Walk Animation",
+                Description = "Carrying weights while walking for strength",
+                File = "farmers_walk.fbx",
+                FileType = "FBX",
+                Screenshot = "farmers_walk_screenshot.jpg",
+            },
+            new Motion
+            {
+                Name = "Yoga Sun Salutation Animation",
+                Description = "Flowing yoga sequence connecting breath with movement",
+                File = "sun_salutation.fbx",
+                FileType = "FBX",
+                Screenshot = "sun_salutation_screenshot.jpg",
+                Level = 1,
+                Equipment = new[] { "YogaMat" },
+                BodyParts = new[] { "FullBody" },
+                MuscleGroups = new[] { "Core", "Shoulders", "Legs", "Back" },
+                Categories = new[] { "Flexibility", "Balance", "Mindfulness" },
+                PrimaryJoints = new[] { "Spine", "Shoulder", "Hip", "Knee" },
+                Labels = new[] { "Yoga", "Flow", "Flexibility", "SunSalutation" }
+            },
+            new Motion
+            {
+                Name = "Pilates Roll-Up Animation",
+                Description = "Controlled spinal articulation exercise",
+                File = "pilates_roll_up.fbx",
+                FileType = "FBX",
+                Screenshot = "pilates_roll_up_screenshot.jpg",
+                Level = 2,
+                Equipment = new[] { "YogaMat" },
+                BodyParts = new[] { "Core", "Spine" },
+                MuscleGroups = new[] { "RectusAbdominis", "TransverseAbdominis", "SpinalErectors" },
+                Categories = new[] { "Core", "Flexibility", "Control" },
+                PrimaryJoints = new[] { "Spine" },
+                Labels = new[] { "Pilates", "Core", "Spine", "Control" }
+            },
+            new Motion
+            {
+                Name = "Wall Ball Animation",
+                Description = "Wall ball throw exercise with medicine ball",
+                File = "wall_ball.fbx",
+                FileType = "FBX",
+                Screenshot = "wall_ball_screenshot.jpg",
+                Level = 4,
+                Equipment = new[] { "MedicineBall" },
+                BodyParts = new[] { "FullBody" },
+                MuscleGroups = new[] { "Legs", "Core", "Shoulders", "Arms" },
+                Categories = new[] { "Strength", "Cardio", "FullBody" },
+                PrimaryJoints = new[] { "Knee", "Hip", "Shoulder", "Elbow" },
+                Labels = new[] { "WallBall", "Cardio", "Strength" }
             }
         };
     }
