@@ -23,6 +23,14 @@ public static class MotionEndpoints
         })
         .WithName("GetMotion");
 
+        // GET /motions/tags - Get all unique tags from motions
+        app.MapGet("/motions/tags", (MotionService motionService) =>
+        {
+            var tags = motionService.GetMotionTags();
+            return Results.Ok(tags);
+        })
+        .WithName("GetMotionTags");
+
         // POST /motions - Create a new motion
         app.MapPost("/motions", (MotionService motionService, CreateMotionRequest request) =>
         {

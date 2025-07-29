@@ -23,6 +23,14 @@ public static class AvatarEndpoints
         })
         .WithName("GetAvatar");
 
+        // GET /avatars/tags - Get all unique tags from avatars
+        app.MapGet("/avatars/tags", (AvatarService avatarService) =>
+        {
+            var tags = avatarService.GetAvatarTags();
+            return Results.Ok(tags);
+        })
+        .WithName("GetAvatarTags");
+
         // POST /avatars - Create a new avatar
         app.MapPost("/avatars", (AvatarService avatarService, CreateAvatarRequest request) =>
         {

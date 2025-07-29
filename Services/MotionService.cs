@@ -228,6 +228,7 @@ public class MotionService
         return updatedMotion;
     }
 
+
     public bool DeleteMotion(Guid id)
     {
         var motionIndex = _motions.FindIndex(m => m.Id == id);
@@ -238,5 +239,90 @@ public class MotionService
 
         _motions.RemoveAt(motionIndex);
         return true;
+    }
+
+    public List<string> GetMotionTags()
+    {
+        var tags = new HashSet<string>();
+
+        foreach (var motion in _motions)
+        {
+            // Add Level tag
+            tags.Add($"level:{motion.Level}");
+
+            // Add Equipment tags
+            if (motion.Equipment != null)
+            {
+                foreach (var equipment in motion.Equipment)
+                {
+                    if (!string.IsNullOrEmpty(equipment))
+                    {
+                        tags.Add($"equipment:{equipment}");
+                    }
+                }
+            }
+
+            // Add BodyParts tags
+            if (motion.BodyParts != null)
+            {
+                foreach (var bodyPart in motion.BodyParts)
+                {
+                    if (!string.IsNullOrEmpty(bodyPart))
+                    {
+                        tags.Add($"bodypart:{bodyPart}");
+                    }
+                }
+            }
+
+            // Add MuscleGroups tags
+            if (motion.MuscleGroups != null)
+            {
+                foreach (var muscleGroup in motion.MuscleGroups)
+                {
+                    if (!string.IsNullOrEmpty(muscleGroup))
+                    {
+                        tags.Add($"musclegroup:{muscleGroup}");
+                    }
+                }
+            }
+
+            // Add Categories tags
+            if (motion.Categories != null)
+            {
+                foreach (var category in motion.Categories)
+                {
+                    if (!string.IsNullOrEmpty(category))
+                    {
+                        tags.Add($"category:{category}");
+                    }
+                }
+            }
+
+            // Add PrimaryJoints tags
+            if (motion.PrimaryJoints != null)
+            {
+                foreach (var joint in motion.PrimaryJoints)
+                {
+                    if (!string.IsNullOrEmpty(joint))
+                    {
+                        tags.Add($"primaryjoint:{joint}");
+                    }
+                }
+            }
+
+            // Add Labels tags
+            if (motion.Labels != null)
+            {
+                foreach (var label in motion.Labels)
+                {
+                    if (!string.IsNullOrEmpty(label))
+                    {
+                        tags.Add($"label:{label}");
+                    }
+                }
+            }
+        }
+
+        return tags.OrderBy(t => t).ToList();
     }
 }

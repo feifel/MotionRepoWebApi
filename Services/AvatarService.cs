@@ -104,9 +104,9 @@ public class AvatarService
         var skip = Math.Max(0, offset ?? 0);
         var take = Math.Max(1, Math.Min(100, limit ?? 10)); // Default to 10 if not specified
 
-        Console.WriteLine($"FilteredAvatars: {totalCount}, skip {skip}, take {take}");
-
         var pagedData = filteredAvatars.Skip(skip).Take(take).ToArray();
+
+        Console.WriteLine($"FilteredAvatars: {totalCount}, skip {skip}, take {take} -> return: {pagedData.Length}");
 
         return new PagedResponse<Avatar>(pagedData, totalCount, skip, take);
     }
@@ -154,5 +154,31 @@ public class AvatarService
 
         _avatars.RemoveAt(avatarIndex);
         return true;
+    }
+
+    public List<string> GetAvatarTags()
+    {
+        var tags = new HashSet<string>();
+
+        foreach (var avatar in _avatars)
+        {
+            if (!string.IsNullOrEmpty(avatar.Gender))
+            {
+                tags.Add($"gender:{avatar.Gender}");
+            }
+
+            if (avatar.Categories != null)
+            {
+                foreach (var category in avatar.Categories)
+                {
+                    if (!string.IsNullOrEmpty(category))
+                    {
+                        tags.Add($"category:{category}");
+                    }
+                }
+            }
+        }
+
+        return tags.OrderBy(t => t).ToList();
     }
 }
