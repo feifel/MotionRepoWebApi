@@ -1,4 +1,5 @@
 using MotionRepoServer.Models;
+using MotionRepoServer.Data;
 
 namespace MotionRepoServer.Services;
 
@@ -16,90 +17,7 @@ public class WorkoutService
         _workouts = new List<Workout>();
         
         // Initialize with sample data as fallback
-        InitializeSampleData();
-    }
-
-    private void InitializeSampleData()
-    {
-        var motions = _motionService.GetMotions(0, 50, null, null).Data.ToList();
-        if (!motions.Any())
-            return;
-
-        var workouts = new List<Workout>
-        {
-            new Workout
-            {
-                Id = Guid.Parse("3313c09e-2f1e-4b19-bab2-aed759966b6f"),
-                Name = "Morning Warm-up Routine",
-                Description = "A quick 10-minute warm-up routine to start your day with energy and flexibility",
-                Exercises = new List<Exercise>
-                {
-                    new Exercise
-                    {
-                        MotionId = motions.FirstOrDefault(m => m.Name == "Standing Pose")?.Id ?? motions.First().Id,
-                        Speed = 1,
-                        Repetitions = 15,
-                        Duration = 60,
-                        ExerciseType = ExerciseType.Duration,
-                        CustomFields = new Dictionary<string, object>
-                        {
-                            { "intensity", "low" },
-                            { "notes", "Focus on smooth, controlled movements" }
-                        }
-                    },
-                    new Exercise
-                    {
-                        MotionId = motions.FirstOrDefault(m => m.Name == "Air Squat")?.Id ?? motions.First().Id,
-                        Speed = 1,
-                        Repetitions = 10,
-                        Duration = 30,
-                        ExerciseType = ExerciseType.Repetition,
-                        CustomFields = new Dictionary<string, object>
-                        {
-                            { "intensity", "medium" },
-                            { "notes", "Keep your back straight and chest up" }
-                        }
-                    }
-                }
-            },
-            new Workout
-            {
-                Id = Guid.Parse("38d8baa2-c288-448c-8a44-98226e477a62"),
-                Name = "Core Strength Builder",
-                Description = "A focused core workout to build abdominal and lower back strength",
-                Exercises = new List<Exercise>
-                {
-                    new Exercise
-                    {
-                        MotionId = motions.FirstOrDefault(m => m.Name == "Pushup")?.Id ?? motions.First().Id,
-                        Speed = 1,
-                        Repetitions = 15,
-                        Duration = 45,
-                        ExerciseType = ExerciseType.Repetition,
-                        CustomFields = new Dictionary<string, object>
-                        {
-                            { "intensity", "high" },
-                            { "notes", "Maintain proper plank position throughout" }
-                        }
-                    },
-                    new Exercise
-                    {
-                        MotionId = motions.FirstOrDefault(m => m.Name == "Laying On The Floor")?.Id ?? motions.First().Id,
-                        Speed = 1,
-                        Repetitions = 1,
-                        Duration = 60,
-                        ExerciseType = ExerciseType.Duration,
-                        CustomFields = new Dictionary<string, object>
-                        {
-                            { "intensity", "low" },
-                            { "notes", "Use as active recovery between sets" }
-                        }
-                    }
-                }
-            }
-        };
-
-        _workouts.AddRange(workouts);
+        _workouts.AddRange(WorkoutSampleData.GetSampleWorkouts());
     }
 
     public async Task InitializeAsync()

@@ -1,4 +1,5 @@
 using MotionRepoServer.Models;
+using MotionRepoServer.Data;
 
 namespace MotionRepoServer.Services;
 
@@ -14,94 +15,7 @@ public class MotionService
         _motions = new List<Motion>();
         
         // Initialize with sample data as fallback
-        InitializeSampleData();
-    }
-
-    private void InitializeSampleData()
-    {
-        _motions.AddRange(new List<Motion>
-        {
-            new Motion
-            {
-                Id = Guid.Parse("23b03363-3b5f-4a5e-804b-8d490f8e51e6"),
-                Name = "Air Squat",
-                Description = "Basic air squat exercise",
-                File = "AirSquat.glb",
-                FileType = "GLB",
-                Screenshot = "air_squat_screenshot.jpg",
-                Level = 1,
-                Equipment = new[] { "NoEquipment" },
-                BodyParts = new[] { "Legs", "Glutes" },
-                MuscleGroups = new[] { "Quads", "Hamstrings", "Glutes" },
-                Categories = new[] { "Strength", "LowerBody" },
-                PrimaryJoints = new[] { "Knee", "Hip", "Ankle" },
-                Labels = new[] { "Squat", "Bodyweight", "Basic" }
-            },
-            new Motion
-            {
-                Id = Guid.Parse("7d4e601f-af24-4fd8-b37e-5f26a12e1ba2"),
-                Name = "Laying On The Floor",
-                Description = "Resting position laying on the floor",
-                File = "LayingOnTheFloor.glb",
-                FileType = "GLB",
-                Screenshot = "laying_screenshot.jpg",
-                Level = 1,
-                Equipment = new[] { "NoEquipment" },
-                BodyParts = new[] { "FullBody" },
-                MuscleGroups = new[] { "Core" },
-                Categories = new[] { "Rest", "Recovery" },
-                PrimaryJoints = new[] { "Spine", "Hip" },
-                Labels = new[] { "Rest", "Floor", "Recovery" }
-            },
-            new Motion
-            {
-                Id = Guid.Parse("7ef293cb-383b-41ba-8085-049064cbbc73"),
-                Name = "Pushup",
-                Description = "Standard pushup exercise",
-                File = "Pushup.glb",
-                FileType = "GLB",
-                Screenshot = "pushup_screenshot.jpg",
-                Level = 2,
-                Equipment = new[] { "NoEquipment" },
-                BodyParts = new[] { "Chest", "Arms", "Core" },
-                MuscleGroups = new[] { "Chest", "Triceps", "Shoulders", "Core" },
-                Categories = new[] { "Strength", "UpperBody" },
-                PrimaryJoints = new[] { "Shoulder", "Elbow", "Wrist" },
-                Labels = new[] { "Pushup", "Bodyweight", "UpperBody" }
-            },
-            new Motion
-            {
-                Id = Guid.Parse("a2e4a2d5-bde4-4b3e-b376-ee3e1dbcbade"),
-                Name = "Standing Pose",
-                Description = "Basic standing idle pose",
-                File = "StandingPose.glb",
-                FileType = "GLB",
-                Screenshot = "standing_screenshot.jpg",
-                Level = 1,
-                Equipment = new[] { "NoEquipment" },
-                BodyParts = new[] { "FullBody" },
-                MuscleGroups = new[] { "Core" },
-                Categories = new[] { "Pose", "Idle" },
-                PrimaryJoints = new[] { "Spine", "Hip", "Knee", "Ankle" },
-                Labels = new[] { "Standing", "Idle", "Pose" }
-            },
-            new Motion
-            {
-                Id = Guid.Parse("f7691059-c26d-4a3c-a45f-f8f9f0ab1436"),
-                Name = "Sitting On The Floor",
-                Description = "Sitting position on the floor",
-                File = "SittingOnTheFlor.glb",
-                FileType = "GLB",
-                Screenshot = "sitting_screenshot.jpg",
-                Level = 1,
-                Equipment = new[] { "NoEquipment" },
-                BodyParts = new[] { "FullBody" },
-                MuscleGroups = new[] { "Core", "HipFlexors" },
-                Categories = new[] { "Pose", "Rest" },
-                PrimaryJoints = new[] { "Hip", "Knee", "Ankle" },
-                Labels = new[] { "Sitting", "Floor", "Rest" }
-            }
-        });
+        _motions.AddRange(MotionSampleData.GetSampleMotions());
     }
 
     public async Task InitializeAsync()
