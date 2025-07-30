@@ -9,18 +9,6 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
     options.Authority = builder.Configuration["Authentication:Schemes:Bearer:Authority"];
     options.Audience = builder.Configuration["Authentication:Schemes:Bearer:ValidAudiences:0"];
 
-    // Configure token validation parameters explicitly
-    // options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-    // {
-    //     ValidateIssuer = true,
-    //     ValidIssuer = builder.Configuration["Authentication:Schemes:Bearer:ValidIssuer"],
-    //     ValidateAudience = true,
-    //     ValidAudience = audience,
-    //     ValidateLifetime = true,
-    //     ValidateIssuerSigningKey = true,
-    //     ClockSkew = TimeSpan.FromMinutes(5) // Allow 5 minutes clock skew
-    // };
-
     // Add event handlers for debugging
     options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
     {
@@ -48,20 +36,23 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("https://feifel.github.io/MotionRepoWebApp/", "http://localhost:5173", "https://localhost:5173");
-        //policy.AllowAnyOrigin(); // for browser testing
-        policy.AllowAnyMethod();
-        policy.AllowAnyHeader();
+        policy.WithOrigins("https://feifel.github.io/MotionRepoWebApp/", "http://localhost:5173", "https://localhost:5173")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddSwaggerService();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// Register HttpClient for GitHub repository service
+builder.Services.AddHttpClient<GitHubRepositoryService>();
 
 // Register application services
+builder.Services.AddSingleton<GitHubRepositoryService>();
+builder.Services.AddSingleton<MotionService>();
 builder.Services.AddSingleton<AvatarService>();
-builder.Services.AddSingleton<MotionService>(); // Renamed from AnimationService
 builder.Services.AddSingleton<WorkoutService>();
 
 var app = builder.Build();
@@ -69,58 +60,32 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseStaticFiles();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
-// Enable CORS
-//app.UseCors();
 app.UseCors("AllowFrontend");
 
-// Add authentication and authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Map endpoints for different resources
-app.MapAvatarEndpoints();
-app.MapMotionEndpoints(); // Renamed from MapAnimationEndpoints
-app.MapWorkoutEndpoints();
-
-// Add a test endpoint without authorization
-app.MapGet("/test", () => "API is working!")
-.WithName("TestEndpoint");
-
-// Add an endpoint to debug JWT token information
-app.MapGet("/debug-token", (HttpContext context) =>
+// Initialize services with GitHub data
+using (var scope = app.Services.CreateScope())
 {
-    var authHeader = context.Request.Headers.Authorization.FirstOrDefault();
-    if (authHeader == null)
-    {
-        return Results.Json(new { message = "No Authorization header found" });
-    }
+    var motionService = scope.ServiceProvider.GetRequiredService<MotionService>();
+    var avatarService = scope.ServiceProvider.GetRequiredService<AvatarService>();
+    var workoutService = scope.ServiceProvider.GetRequiredService<WorkoutService>();
+    
+    await motionService.InitializeAsync();
+    await avatarService.InitializeAsync();
+    await workoutService.InitializeAsync();
+}
 
-    if (!authHeader.StartsWith("Bearer "))
-    {
-        return Results.Json(new { message = "Authorization header doesn't start with 'Bearer '" });
-    }
-
-    var token = authHeader.Substring("Bearer ".Length);
-    var parts = token.Split('.');
-
-    return Results.Json(new {
-        message = "Token received",
-        tokenParts = parts.Length,
-        headerLength = parts.Length > 0 ? parts[0].Length : 0,
-        payloadLength = parts.Length > 1 ? parts[1].Length : 0,
-        signatureLength = parts.Length > 2 ? parts[2].Length : 0,
-        user = context.User.Identity?.Name ?? "Not authenticated"
-    });
-})
-.WithName("DebugToken");
-
-app.MapFallbackToFile("index.html");
+// Register endpoints
+app.MapMotionEndpoints();
+app.MapAvatarEndpoints();
+app.MapWorkoutEndpoints();
 
 app.Run();

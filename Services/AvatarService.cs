@@ -5,15 +5,38 @@ namespace MotionRepoServer.Services;
 public class AvatarService
 {
     private readonly List<Avatar> _avatars;
+    private readonly GitHubRepositoryService _gitHubService;
+    private bool _initialized = false;
 
-    public AvatarService()
+    public AvatarService(GitHubRepositoryService gitHubService)
     {
-        _avatars = new List<Avatar>
+        _gitHubService = gitHubService;
+        _avatars = new List<Avatar>();
+        
+        // Initialize with sample data as fallback
+        InitializeSampleData();
+    }
+
+    private void InitializeSampleData()
+    {
+        _avatars.AddRange(new List<Avatar>
         {
-            new Avatar("MaleBot.glb", "Male Bot", "A male robot avatar", "Male", new[] { "Robotics", "Technology" }),
-            new Avatar("FemaleBot.glb", "Female Bot", "A female robot avatar", "Female", new[] { "Robotics", "Technology" }),
-            new Avatar("Ninja.glb", "Shadow Ninja", "A stealthy ninja warrior avatar", "Male", new[] { "Fantasy", "Stealth" }),
-            new Avatar("Maria.glb", "Maria", "A friendly female character avatar", "Female", new[] { "Realistic", "Casual" }),
+            new Avatar("MaleBot.glb", "Male Bot", "A male robot avatar", "Male", new[] { "Robotics", "Technology" }) 
+            { 
+                Id = Guid.Parse("904d91dc-f6cf-4da6-a0cc-becdd51ac64f") 
+            },
+            new Avatar("FemaleBot.glb", "Female Bot", "A female robot avatar", "Female", new[] { "Robotics", "Technology" }) 
+            { 
+                Id = Guid.Parse("98fd82e0-c4a6-46cf-9b60-28150eed3ffd") 
+            },
+            new Avatar("Ninja.glb", "Shadow Ninja", "A stealthy ninja warrior avatar", "Male", new[] { "Fantasy", "Stealth" }) 
+            { 
+                Id = Guid.Parse("e66fb150-f748-4dfa-a4cb-b12c8ba1ea25") 
+            },
+            new Avatar("Maria.glb", "Maria", "A friendly female character avatar", "Female", new[] { "Realistic", "Casual" }) 
+            { 
+                Id = Guid.Parse("e32a46ec-6546-4f44-a517-1b2f6c960827") 
+            },
             new Avatar("Knight.glb", "Sir Galahad", "A noble medieval knight in shining armor", "Male", new[] { "Fantasy", "Historical", "Medieval" }),
             new Avatar("Wizard.glb", "Merlin", "A wise old wizard with magical powers", "Male", new[] { "Fantasy", "Magic" }),
             new Avatar("Elf.glb", "Elara", "An elegant elven archer", "Female", new[] { "Fantasy", "Archery" }),
@@ -30,7 +53,24 @@ public class AvatarService
             new Avatar("Assassin.glb", "Shadow", "A deadly silent killer", "Female", new[] { "Stealth", "Combat", "Dark" }),
             new Avatar("Engineer.glb", "Gearhead", "A tech-savvy mechanical expert", "Male", new[] { "Industrial", "Technology", "Engineering" }),
             new Avatar("Dancer.glb", "Luna", "A graceful performer and entertainer", "Female", new[] { "Artistic", "Performance", "Entertainment" })
-        };
+        });
+    }
+
+    public async Task InitializeAsync()
+    {
+        if (_initialized) return;
+
+        if (_gitHubService.IsConfigured)
+        {
+            var githubAvatars = await _gitHubService.LoadAvatarsAsync();
+            if (githubAvatars.Any())
+            {
+                _avatars.Clear();
+                _avatars.AddRange(githubAvatars);
+            }
+        }
+
+        _initialized = true;
     }
 
     public PagedResponse<Avatar> GetAvatars(int? offset, int? limit, string? tags, string? search)
@@ -89,7 +129,7 @@ public class AvatarService
                         return prefix switch
                         {
                             "gender" => a.Gender.ToLowerInvariant().Contains(postfix),
-                            "category" => a.Categories.Any(cat => cat.ToLowerInvariant().Contains(postfix)),
+                            "categories" => a.Categories.Any(cat => cat.ToLowerInvariant().Contains(postfix)),
                             _ => true // Unknown prefix, skip this tag
                         };
                     });
@@ -125,60 +165,41 @@ public class AvatarService
 
     public Avatar? UpdateAvatar(Guid id, UpdateAvatarRequest request)
     {
-        var existingAvatarIndex = _avatars.FindIndex(a => a.Id == id);
-        if (existingAvatarIndex == -1)
-        {
+        var existingAvatar = _avatars.FirstOrDefault(a => a.Id == id);
+        if (existingAvatar == null)
             return null;
-        }
 
-        var updatedAvatar = _avatars[existingAvatarIndex] with
+        var updatedAvatar = new Avatar(request.FileName, request.Name, request.Description, request.Gender, request.Categories)
         {
-            FileName = request.FileName,
-            Name = request.Name,
-            Description = request.Description,
-            Gender = request.Gender,
-            Categories = request.Categories
+            Id = id
         };
 
-        _avatars[existingAvatarIndex] = updatedAvatar;
+        var index = _avatars.FindIndex(a => a.Id == id);
+        _avatars[index] = updatedAvatar;
+
         return updatedAvatar;
     }
 
     public bool DeleteAvatar(Guid id)
     {
-        var avatarIndex = _avatars.FindIndex(a => a.Id == id);
-        if (avatarIndex == -1)
-        {
+        var avatar = _avatars.FirstOrDefault(a => a.Id == id);
+        if (avatar == null)
             return false;
-        }
 
-        _avatars.RemoveAt(avatarIndex);
+        _avatars.Remove(avatar);
         return true;
     }
 
     public List<string> GetAvatarTags()
     {
-        var tags = new HashSet<string>();
+        var tags = new List<string>();
 
         foreach (var avatar in _avatars)
         {
-            if (!string.IsNullOrEmpty(avatar.Gender))
-            {
-                tags.Add($"gender:{avatar.Gender}");
-            }
-
-            if (avatar.Categories != null)
-            {
-                foreach (var category in avatar.Categories)
-                {
-                    if (!string.IsNullOrEmpty(category))
-                    {
-                        tags.Add($"category:{category}");
-                    }
-                }
-            }
+            tags.AddRange(avatar.Categories.Select(c => $"category:{c}"));
+            tags.Add($"gender:{avatar.Gender}");
         }
 
-        return tags.OrderBy(t => t).ToList();
+        return tags.Distinct().OrderBy(t => t).ToList();
     }
 }
